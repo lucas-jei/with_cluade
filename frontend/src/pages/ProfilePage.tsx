@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../api';
 import type { User } from '../types';
+import TopNav from '../components/TopNav';
 import './ProfilePage.css';
 
 interface Msg {
@@ -73,6 +74,8 @@ function ProfilePage() {
   if (!user) return null;
 
   return (
+    <>
+    <TopNav />
     <div className="profile-container">
       <div className="profile-header">
         <h1>내 정보</h1>
@@ -156,6 +159,7 @@ function ProfilePage() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

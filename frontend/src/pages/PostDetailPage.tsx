@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { postAPI, userAPI, attachmentAPI } from '../api';
 import type { Post, User } from '../types';
+import TopNav from '../components/TopNav';
 import './BoardPage.css';
 
 function formatBytes(bytes: number) {
@@ -42,10 +43,12 @@ function PostDetailPage() {
   const canEdit = me && post && (me.id === post.user_id);
   const canDelete = me && post && (me.id === post.user_id || me.is_admin);
 
-  if (loading) return <div className="board-container"><p className="loading">불러오는 중...</p></div>;
-  if (!post) return <div className="board-container"><p className="empty">게시글을 찾을 수 없습니다.</p></div>;
+  if (loading) return <><TopNav /><div className="board-container"><p className="loading">불러오는 중...</p></div></>;
+  if (!post) return <><TopNav /><div className="board-container"><p className="empty">게시글을 찾을 수 없습니다.</p></div></>;
 
   return (
+    <>
+    <TopNav />
     <div className="board-container">
       <div className="board-header">
         <h1>게시판</h1>
@@ -88,6 +91,7 @@ function PostDetailPage() {
         )}
       </div>
     </div>
+    </>
   );
 }
 

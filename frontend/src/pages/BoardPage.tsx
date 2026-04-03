@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { postAPI, codeAPI } from '../api';
 import type { Code, Post } from '../types';
+import TopNav from '../components/TopNav';
 import './BoardPage.css';
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -165,6 +166,8 @@ function BoardPage({ isLoggedIn }: Props) {
   const boardUrl = location.pathname + location.search;
 
   return (
+    <>
+    <TopNav />
     <div className="board-container">
       <div className="board-header">
         <h1>게시판</h1>
@@ -277,6 +280,7 @@ function BoardPage({ isLoggedIn }: Props) {
         </>
       )}
     </div>
+    </>
   );
 }
 

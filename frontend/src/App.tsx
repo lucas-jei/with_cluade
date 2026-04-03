@@ -12,6 +12,7 @@ import BoardPage from './pages/BoardPage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostFormPage from './pages/PostFormPage';
 import { userAPI, authAPI } from './api';
+import { AuthContext } from './context/AuthContext';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
@@ -39,23 +40,25 @@ function App() {
   if (authLoading) return null;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainPage isLoggedIn={isLoggedIn} isAdmin={isAdmin} username={username} onLogout={handleLogout} />} />
-        <Route path="/login" element={<LoginPage onLogin={() => setIsLoggedIn(true)} />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/board" element={<BoardPage isLoggedIn={isLoggedIn} />} />
-        <Route path="/board/write" element={isLoggedIn ? <PostFormPage /> : <Navigate to="/login" replace />} />
-        <Route path="/board/:postId" element={<PostDetailPage />} />
-        <Route path="/board/:postId/edit" element={isLoggedIn ? <PostFormPage /> : <Navigate to="/login" replace />} />
-        <Route path="/profile" element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" replace />} />
-        <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/" replace />} />
-        <Route path="/admin/users/:userId" element={isAdmin ? <AdminUserDetailPage /> : <Navigate to="/" replace />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthContext.Provider value={{ isLoggedIn, isAdmin, username, onLogout: handleLogout }}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage isLoggedIn={isLoggedIn} isAdmin={isAdmin} username={username} onLogout={handleLogout} />} />
+          <Route path="/login" element={<LoginPage onLogin={() => setIsLoggedIn(true)} />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/board" element={<BoardPage isLoggedIn={isLoggedIn} />} />
+          <Route path="/board/write" element={isLoggedIn ? <PostFormPage /> : <Navigate to="/login" replace />} />
+          <Route path="/board/:postId" element={<PostDetailPage />} />
+          <Route path="/board/:postId/edit" element={isLoggedIn ? <PostFormPage /> : <Navigate to="/login" replace />} />
+          <Route path="/profile" element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" replace />} />
+          <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/" replace />} />
+          <Route path="/admin/users/:userId" element={isAdmin ? <AdminUserDetailPage /> : <Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 

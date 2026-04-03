@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { postAPI, codeAPI, attachmentAPI } from '../api';
 import type { Code, Attachment } from '../types';
+import TopNav from '../components/TopNav';
 import './BoardPage.css';
 import './PostFormPage.css';
 
@@ -138,6 +139,8 @@ function PostFormPage() {
   };
 
   return (
+    <>
+    <TopNav />
     <div className="board-container">
       <div className="board-header">
         <h1>{isEdit ? '게시글 수정' : '게시글 작성'}</h1>
@@ -246,6 +249,7 @@ function PostFormPage() {
         </div>
       </form>
     </div>
+    </>
   );
 }
 
