@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { postAPI, userAPI, attachmentAPI } from '../api';
 import type { Post, User } from '../types';
 import TopNav from '../components/TopNav';
+import { getCategoryStyle } from '../utils/categoryColor';
 import './BoardPage.css';
 
 function formatBytes(bytes: number) {
@@ -64,7 +65,7 @@ function PostDetailPage() {
           </div>
         </div>
         <div className="post-meta">
-          <span className={`category-badge cat-${post.category}`}>{post.category}</span>
+          <span className="category-badge" style={getCategoryStyle(post.category)}>{post.category}</span>
           <span>{post.username}</span>
           <span>{new Date(post.created_at).toLocaleString('ko-KR')}</span>
           {post.updated_at && <span>(수정됨)</span>}
@@ -79,11 +80,18 @@ function PostDetailPage() {
                 <li key={att.id} className="attachment-item">
                   <button
                     className="attachment-download"
-                    onClick={() => attachmentAPI.download(att.id)}
+                    onClick={() => attachmentAPI.view(att.id)}
                   >
                     {att.filename}
                   </button>
                   <span className="attachment-size">{formatBytes(att.file_size)}</span>
+                  <button
+                    className="attachment-dl-btn"
+                    onClick={() => attachmentAPI.download(att.id)}
+                    title="다운로드"
+                  >
+                    ↓
+                  </button>
                 </li>
               ))}
             </ul>

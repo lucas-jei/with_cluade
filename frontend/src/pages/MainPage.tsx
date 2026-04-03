@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { postAPI, codeAPI } from '../api';
 import type { Code, Post } from '../types';
+import { getCategoryStyle } from '../utils/categoryColor';
 import './MainPage.css';
 
 interface BoardSectionProps {
@@ -14,7 +15,7 @@ function BoardSection({ category, posts, isLoggedIn }: BoardSectionProps) {
   return (
     <div className="board-section">
       <div className="board-section-header">
-        <span className={`category-badge cat-${category.code}`}>{category.name}</span>
+        <span className="category-badge" style={getCategoryStyle(category.code)}>{category.name}</span>
         {isLoggedIn && (
           <Link to="/board/write" className="write-link">글쓰기</Link>
         )}
@@ -28,6 +29,11 @@ function BoardSection({ category, posts, isLoggedIn }: BoardSectionProps) {
             <li key={post.id} className="board-section-item">
               <Link to={`/board/${post.id}`} className="board-section-title">
                 {post.title}
+                {post.attachments.length > 0 && (
+                  <span className="attachment-indicator" title={`첨부파일 ${post.attachments.length}개`}>
+                    📎{post.attachments.length}
+                  </span>
+                )}
               </Link>
               <span className="board-section-meta">
                 {post.username} · {new Date(post.created_at).toLocaleDateString('ko-KR')}

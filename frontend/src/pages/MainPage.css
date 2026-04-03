@@ -196,3 +196,11 @@ nav {
   .btn-primary { padding: 8px 14px; font-size: 13px; }
   .board-section-header { flex-direction: column; align-items: flex-start; gap: 6px; }
 }
+
+.attachment-indicator {
+  margin-left: 6px;
+  font-size: 0.78rem;
+  color: #6b7280;
+  vertical-align: middle;
+  white-space: nowrap;
+}

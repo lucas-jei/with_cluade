@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-do
 import { postAPI, codeAPI } from '../api';
 import type { Code, Post } from '../types';
 import TopNav from '../components/TopNav';
+import { getCategoryStyle } from '../utils/categoryColor';
 import './BoardPage.css';
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -240,10 +241,15 @@ function BoardPage({ isLoggedIn }: Props) {
                 <tr key={post.id}>
                   <td className="col-id">{post.id}</td>
                   <td className="col-category">
-                    <span className={`category-badge cat-${post.category}`}>{post.category}</span>
+                    <span className="category-badge" style={getCategoryStyle(post.category)}>{post.category}</span>
                   </td>
                   <td className="col-title">
                     <Link to={`/board/${post.id}`} state={{ from: boardUrl }}>{post.title}</Link>
+                    {post.attachments.length > 0 && (
+                      <span className="attachment-indicator" title={`첨부파일 ${post.attachments.length}개`}>
+                        📎{post.attachments.length}
+                      </span>
+                    )}
                   </td>
                   <td className="col-author">{post.username}</td>
                   <td className="col-date">{new Date(post.created_at).toLocaleDateString('ko-KR')}</td>

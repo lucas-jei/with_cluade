@@ -81,6 +81,17 @@ async def upload_attachment(post_id: int, file: UploadFile = File(...), current_
     )
 
 
+@router.get("/attachments/{attachment_id}/view")
+def view_attachment(attachment_id: int, db: Session = Depends(get_db)):
+    att = crud.get_attachment(db, attachment_id)
+    if not att:
+        raise HTTPException(status_code=404, detail="첨부파일을 찾을 수 없습니다.")
+    file_path = os.path.join(UPLOAD_DIR, att.stored_name)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="파일이 서버에 존재하지 않습니다.")
+    return FileResponse(file_path, media_type=att.mime_type)
+
+
 @router.get("/attachments/{attachment_id}/download")
 def download_attachment(attachment_id: int, db: Session = Depends(get_db)):
     att = crud.get_attachment(db, attachment_id)

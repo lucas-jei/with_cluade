@@ -596,3 +596,28 @@
   font-size: 0.8rem;
   white-space: nowrap;
 }
+
+.attachment-dl-btn {
+  background: none;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 2px 7px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.attachment-dl-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.attachment-indicator {
+  margin-left: 6px;
+  font-size: 0.78rem;
+  color: #6b7280;
+  vertical-align: middle;
+  white-space: nowrap;
+}

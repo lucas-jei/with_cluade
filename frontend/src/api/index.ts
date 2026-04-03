@@ -131,6 +131,10 @@ export const attachmentAPI = {
     });
   },
 
+  view: (attachmentId: number) => {
+    window.open(`${BASE_URL}/posts/attachments/${attachmentId}/view`, '_blank');
+  },
+
   download: (attachmentId: number) => {
     window.location.href = `${BASE_URL}/posts/attachments/${attachmentId}/download`;
   },
