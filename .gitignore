@@ -1,0 +1,10 @@
+# Python
+api/venv/
+api/__pycache__/
+api/*.pyc
+api/.env
+
+# Node
+myapp/node_modules/
+myapp/build/
+myapp/dist/

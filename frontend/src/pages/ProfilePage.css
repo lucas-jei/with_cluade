@@ -1,0 +1,189 @@
+.profile-container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.profile-header h1 {
+  font-size: 22px;
+  color: #333;
+  margin: 0;
+}
+
+.btn-back {
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+}
+
+.btn-back:hover { background: #f5f5f5; }
+
+/* ── 계정 요약 ── */
+
+.profile-summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #4a90e2;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-summary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-name {
+  font-size: 17px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.profile-email {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.profile-meta {
+  font-size: 12px;
+  color: #aaa;
+  margin: 4px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-admin {
+  background: #fff3e0;
+  color: #e67e22;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* ── 카드 ── */
+
+.profile-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.profile-card h2 {
+  font-size: 15px;
+  color: #333;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.input-readonly {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.msg-success {
+  font-size: 13px;
+  color: #27ae60;
+  margin: 0 0 12px;
+}
+
+.msg-error {
+  font-size: 13px;
+  color: #e74c3c;
+  margin: 0 0 12px;
+}
+
+.form-submit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-save {
+  padding: 10px 28px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-save:hover:not(:disabled) { background: #357abd; }
+
+.btn-save:disabled {
+  background: #a0c4f1;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .profile-container { padding: 16px; }
+  .profile-header h1 { font-size: 18px; }
+  .profile-summary { padding: 16px; }
+  .profile-card { padding: 16px; }
+  .form-submit { justify-content: stretch; }
+  .btn-save { width: 100%; }
+}
