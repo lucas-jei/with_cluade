@@ -16,9 +16,6 @@ function BoardSection({ category, posts, isLoggedIn }: BoardSectionProps) {
     <div className="board-section">
       <div className="board-section-header">
         <span className="category-badge" style={getCategoryStyle(category.code)}>{category.name}</span>
-        {isLoggedIn && (
-          <Link to="/board/write" className="write-link">글쓰기</Link>
-        )}
       </div>
 
       <ul className="board-section-list">

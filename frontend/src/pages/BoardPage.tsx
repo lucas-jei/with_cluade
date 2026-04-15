@@ -175,7 +175,7 @@ function BoardPage({ isLoggedIn }: Props) {
         <div className="board-actions">
           <button className="btn-back" onClick={() => navigate('/')}>← 메인으로</button>
           {isLoggedIn && (
-            <Link to="/board/write" className="btn-write">글쓰기</Link>
+            <Link to="/board/write" state={{ category: selectedCategory || undefined, from: boardUrl }} className="btn-write">글쓰기</Link>
           )}
         </div>
       </div>

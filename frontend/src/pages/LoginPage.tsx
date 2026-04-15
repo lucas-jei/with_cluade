@@ -7,11 +7,14 @@ interface Props {
   onLogin: () => void;
 }
 
+const SAVED_EMAIL_KEY = 'saved_email';
+
 function LoginPage({ onLogin }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(localStorage.getItem(SAVED_EMAIL_KEY) || '');
   const [password, setPassword] = useState('');
+  const [rememberEmail, setRememberEmail] = useState(!!localStorage.getItem(SAVED_EMAIL_KEY));
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +24,11 @@ function LoginPage({ onLogin }: Props) {
     setLoading(true);
     try {
       const { access_token } = await authAPI.login(email, password);
+      if (rememberEmail) {
+        localStorage.setItem(SAVED_EMAIL_KEY, email);
+      } else {
+        localStorage.removeItem(SAVED_EMAIL_KEY);
+      }
       localStorage.setItem('token', access_token);
       onLogin();
       navigate('/');
@@ -55,6 +63,15 @@ function LoginPage({ onLogin }: Props) {
               placeholder="비밀번호를 입력하세요"
               required
             />
+          </div>
+          <div className="form-check">
+            <input
+              type="checkbox"
+              id="rememberEmail"
+              checked={rememberEmail}
+              onChange={(e) => setRememberEmail(e.target.checked)}
+            />
+            <label htmlFor="rememberEmail">이메일 저장</label>
           </div>
           {(location.state as { message?: string })?.message && (
             <p className="success-message">{(location.state as { message: string }).message}</p>

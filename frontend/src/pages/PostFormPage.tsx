@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { postAPI, codeAPI, attachmentAPI } from '../api';
 import type { Code, Attachment } from '../types';
 import TopNav from '../components/TopNav';
@@ -20,7 +20,11 @@ function formatBytes(bytes: number) {
 function PostFormPage() {
   const { postId } = useParams<{ postId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const isEdit = !!postId;
+  const locationState = location.state as { category?: string; from?: string } | null;
+  const initialCategory = locationState?.category;
+  const backUrl = locationState?.from || '/board';
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -40,7 +44,10 @@ function PostFormPage() {
   useEffect(() => {
     codeAPI.getCodes('BOARD_CATEGORY').then((codes) => {
       setCategories(codes);
-      if (!isEdit && codes.length > 0) setCategory(codes[0].code);
+      if (!isEdit && codes.length > 0) {
+        const matched = codes.find((c) => c.code === initialCategory);
+        setCategory(matched ? matched.code : codes[0].code);
+      }
     });
   }, [isEdit]);
 
@@ -144,7 +151,7 @@ function PostFormPage() {
     <div className="board-container">
       <div className="board-header">
         <h1>{isEdit ? '게시글 수정' : '게시글 작성'}</h1>
-        <button className="btn-back" onClick={() => navigate(isEdit ? `/board/${postId}` : '/board')}>
+        <button className="btn-back" onClick={() => navigate(isEdit ? `/board/${postId}` : backUrl)}>
           ← 취소
         </button>
       </div>
