@@ -514,8 +514,16 @@
   }
   .board-table {
     display: block;
+    width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+  .board-table thead,
+  .board-table tbody,
+  .board-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
   }
   .col-author {
     display: none;
