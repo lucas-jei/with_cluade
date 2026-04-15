@@ -20,6 +20,7 @@ function PostDetailPage() {
   const [post, setPost] = useState<Post | null>(null);
   const [me, setMe] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -28,6 +29,7 @@ function PostDetailPage() {
       token ? userAPI.getMe() : Promise.resolve(null),
     ])
       .then(([p, u]) => { setPost(p); setMe(u); })
+      .catch((err) => setError((err as Error).message))
       .finally(() => setLoading(false));
   }, [postId]);
 
@@ -45,6 +47,7 @@ function PostDetailPage() {
   const canDelete = me && post && (me.id === post.user_id || me.is_admin);
 
   if (loading) return <><TopNav /><div className="board-container"><p className="loading">불러오는 중...</p></div></>;
+  if (error) return <><TopNav /><div className="board-container"><p className="empty">{error}</p></div></>;
   if (!post) return <><TopNav /><div className="board-container"><p className="empty">게시글을 찾을 수 없습니다.</p></div></>;
 
   return (

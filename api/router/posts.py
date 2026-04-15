@@ -102,7 +102,6 @@ def download_attachment(attachment_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="파일이 서버에 존재하지 않습니다.")
     return FileResponse(file_path, filename=att.filename, media_type=att.mime_type)
 
-
 @router.delete("/attachments/{attachment_id}", status_code=204)
 def delete_attachment(attachment_id: int, current_user=Depends(get_current_user), db: Session = Depends(get_db)):
     att = crud.delete_attachment(db, attachment_id, current_user.id, current_user.is_admin)

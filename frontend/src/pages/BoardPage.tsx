@@ -7,7 +7,7 @@ import { getCategoryStyle } from '../utils/categoryColor';
 import './BoardPage.css';
 
 const DEFAULT_PAGE_SIZE = 10;
-const MIN_PAGE_SIZE = 5;
+const MIN_PAGE_SIZE = 1;
 const MAX_PAGE_SIZE = 100;
 
 interface PaginationProps {

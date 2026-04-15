@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from model import User, UserSession
+from datetime import datetime, timezone
 
 
 def create_session(db: Session, user_id: int, session_id: str, expires_at,
@@ -21,6 +22,13 @@ def get_session(db: Session, session_id: str) -> UserSession | None:
     return db.query(UserSession).filter(UserSession.session_id == session_id).first()
 
 
+def extend_session(db: Session, session_id: str, expires_at) -> None:
+    session = get_session(db, session_id)
+    if session:
+        session.expires_at = expires_at
+        db.commit()
+
+
 def deactivate_session(db: Session, session_id: str) -> bool:
     session = get_session(db, session_id)
     if not session:
@@ -40,9 +48,11 @@ def get_user_sessions(db: Session, user_id: int) -> list:
 
 
 def get_all_sessions(db: Session) -> list:
+    now = datetime.now(timezone.utc)
     rows = (
         db.query(UserSession, User.username, User.email)
         .join(User, UserSession.user_id == User.id)
+        .filter(UserSession.expires_at > now)
         .order_by(UserSession.created_at.desc())
         .all()
     )

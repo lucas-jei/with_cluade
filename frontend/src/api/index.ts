@@ -28,6 +28,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
   const data: T = res.status !== 204 ? await res.json() : (null as T);
 
+  if (res.status === 401) {
+    localStorage.removeItem('token');
+    window.location.reload();
+  }
+
   if (!res.ok) {
     const err = data as { detail?: string };
     throw new Error(err?.detail || '요청에 실패했습니다.');
