@@ -512,18 +512,14 @@
   .board-header h1 {
     font-size: 20px;
   }
-  .board-table {
-    display: block;
+  .table-wrap {
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .board-table thead,
-  .board-table tbody,
-  .board-table tr {
-    display: table;
+  .board-table {
     width: 100%;
-    table-layout: fixed;
+    min-width: 320px;
   }
   .col-author {
     display: none;

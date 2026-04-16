@@ -221,6 +221,7 @@ function BoardPage({ isLoggedIn }: Props) {
         <p className="loading">불러오는 중...</p>
       ) : (
         <>
+          <div className="table-wrap">
           <table className="board-table">
             <thead>
               <tr>
@@ -257,6 +258,7 @@ function BoardPage({ isLoggedIn }: Props) {
               ))}
             </tbody>
           </table>
+          </div>
 
           <Pagination page={page} totalPages={totalPages} onChange={handlePageChange} />
 
