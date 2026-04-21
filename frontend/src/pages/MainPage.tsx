@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { postAPI, codeAPI } from '../api';
+import { useAuth } from '../context/AuthContext';
 import type { Code, Post } from '../types';
 import { getCategoryStyle } from '../utils/categoryColor';
+import TopNav from '../components/TopNav';
 import './MainPage.css';
 
 interface BoardSectionProps {
@@ -49,14 +51,8 @@ function BoardSection({ category, posts, isLoggedIn }: BoardSectionProps) {
   );
 }
 
-interface Props {
-  isLoggedIn: boolean;
-  isAdmin: boolean;
-  username: string;
-  onLogout: () => void;
-}
-
-function MainPage({ isLoggedIn, isAdmin, username, onLogout }: Props) {
+function MainPage() {
+  const { isLoggedIn } = useAuth();
   const [categories, setCategories] = useState<Code[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -70,27 +66,7 @@ function MainPage({ isLoggedIn, isAdmin, username, onLogout }: Props) {
 
   return (
     <div className="main-container">
-      <header className="main-header">
-        <h1 className="main-logo">WithCluade</h1>
-        <nav>
-          {isLoggedIn ? (
-            <>
-              {isAdmin && (
-                <Link to="/admin" className="btn-outline">관리자</Link>
-              )}
-              <Link to="/profile" className="btn-outline">
-                <span className="nav-username">{username}</span> 내 정보
-              </Link>
-              <button className="btn-outline" onClick={onLogout}>로그아웃</button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="btn-outline">로그인</Link>
-              <Link to="/signup" className="btn-primary">회원가입</Link>
-            </>
-          )}
-        </nav>
-      </header>
+      <TopNav />
 
       {!isLoggedIn && (
         <div className="main-banner">

@@ -4,7 +4,10 @@
       "Bash(npx create-react-app:*)",
       "Bash(npm start:*)",
       "Bash(npm install:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill *)",
+      "Bash(cmd *)"
     ]
   }
 }

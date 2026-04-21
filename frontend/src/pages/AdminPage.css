@@ -18,7 +18,7 @@
 }
 
 .btn-back {
-  padding: 8px 16px;
+  padding: 6px 12px;
   background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -32,11 +32,11 @@
 .admin-tabs {
   display: flex;
   gap: 4px;
-  margin-bottom: 16px;
+  margin-top: 16px;
 }
 
 .tab-btn {
-  padding: 10px 24px;
+  padding: 6px 12px;
   border: none;
   border-radius: 4px 4px 0 0;
   background: #dde3ec;
@@ -100,7 +100,7 @@
 .badge.normal  { background: #f0f4ff; color: #4a90e2; }
 
 .btn-danger {
-  padding: 5px 12px;
+  padding: 6px 12px;
   background: #e74c3c;
   color: white;
   border: none;
@@ -112,7 +112,7 @@
 .btn-danger:hover { background: #c0392b; }
 
 .btn-detail {
-  padding: 4px 12px;
+  padding: 6px 12px;
   background: #4a90e2;
   color: white;
   border: none;
@@ -182,6 +182,13 @@
   gap: 6px;
 }
 
+.code-actions .btn-back,
+.code-actions .btn-detail,
+.code-actions .btn-danger {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
 .form-error {
   font-size: 13px;
   color: #e74c3c;
@@ -196,7 +203,7 @@
     flex-wrap: wrap;
   }
   .tab-btn {
-    padding: 8px 14px;
+    padding: 6px 12px;
     font-size: 13px;
   }
   .admin-content {
@@ -229,4 +236,100 @@
 
 tr.selected-row:hover td {
   background: #e0ecfa !important;
+}
+
+/* 게시글 열람 모달 */
+.post-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.post-modal {
+  background: white;
+  border-radius: 8px;
+  width: 660px;
+  max-width: 92vw;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.post-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid #eee;
+  gap: 12px;
+}
+
+.post-modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #222;
+  flex: 1;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.post-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #999;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.post-modal-close:hover { color: #333; }
+
+.post-modal-meta {
+  display: flex;
+  gap: 16px;
+  padding: 10px 24px;
+  font-size: 12px;
+  color: #888;
+  border-bottom: 1px solid #f0f0f0;
+  flex-wrap: wrap;
+}
+
+.post-modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  flex: 1;
+}
+
+.post-modal-attachments {
+  padding: 12px 24px 16px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 13px;
+  color: #555;
+}
+
+.post-modal-attachments strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.post-modal-attachments ul {
+  margin: 0;
+  padding: 0 0 0 16px;
+}
+
+.post-modal-attachments li {
+  margin-bottom: 3px;
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { adminAPI } from '../api';
 import type { User, Session } from '../types';
+import TopNav from '../components/TopNav';
 import './AdminUserDetailPage.css';
 
 function AdminUserDetailPage() {
@@ -50,10 +51,7 @@ function AdminUserDetailPage() {
 
   return (
     <div className="detail-container">
-      <div className="detail-header">
-        <h1>회원 상세정보</h1>
-        <button className="btn-back" onClick={() => navigate('/admin')}>← 목록으로</button>
-      </div>
+      <TopNav title="회원 상세정보" backTo="/admin" backLabel="← 목록으로" />
 
       <div className="detail-card">
         <h2>기본 정보</h2>

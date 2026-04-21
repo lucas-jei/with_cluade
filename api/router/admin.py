@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
+from typing import Optional
 from sqlalchemy.orm import Session
 from database import get_db
 from router.deps import get_admin_user
 import crud
 from schema import (UserResponse, AdminUserUpdate, SessionResponse,
                      CommonCodeGroupCreate, CommonCodeGroupUpdate, CommonCodeGroupResponse,
-                     CommonCodeCreate, CommonCodeUpdate, CommonCodeResponse)
+                     CommonCodeCreate, CommonCodeUpdate, CommonCodeResponse,
+                     PostResponse, PostUpdate)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -110,3 +112,31 @@ def admin_update_code(code_id: int, data: CommonCodeUpdate, admin=Depends(get_ad
 def admin_delete_code(code_id: int, admin=Depends(get_admin_user), db: Session = Depends(get_db)):
     if not crud.delete_code(db, code_id):
         raise HTTPException(status_code=404, detail="코드를 찾을 수 없습니다.")
+
+
+# ── 게시글 관리 ───────────────────────────────────────
+
+@router.get("/posts/count")
+def admin_count_posts(category: Optional[str] = None, search: Optional[str] = None,
+                      admin=Depends(get_admin_user), db: Session = Depends(get_db)):
+    return {"total": crud.count_posts(db, category, search)}
+
+
+@router.get("/posts", response_model=list[PostResponse])
+def admin_list_posts(skip: int = 0, limit: int = 20, category: Optional[str] = None,
+                     search: Optional[str] = None, admin=Depends(get_admin_user), db: Session = Depends(get_db)):
+    return crud.get_posts(db, skip, limit, category, search)
+
+
+@router.patch("/posts/{post_id}", response_model=PostResponse)
+def admin_update_post(post_id: int, data: PostUpdate, admin=Depends(get_admin_user), db: Session = Depends(get_db)):
+    post = crud.admin_update_post(db, post_id, data)
+    if not post:
+        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다.")
+    return post
+
+
+@router.delete("/posts/{post_id}", status_code=204)
+def admin_delete_post(post_id: int, admin=Depends(get_admin_user), db: Session = Depends(get_db)):
+    if not crud.delete_post(db, post_id, user_id=0, is_admin=True):
+        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다.")

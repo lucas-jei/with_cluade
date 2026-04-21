@@ -7,8 +7,10 @@ import type {
   CodeGroup,
   Session,
   Attachment,
+  Memo,
 } from '../types';
 
+// const BASE_URL = 'http://52.63.249.190/api';
 const BASE_URL = '/api';
 
 function authHeaders(): Record<string, string> {
@@ -25,6 +27,9 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     },
     ...options,
   });
+
+  const newToken = res.headers.get('X-New-Token');
+  if (newToken) localStorage.setItem('token', newToken);
 
   const data: T = res.status !== 204 ? await res.json() : (null as T);
 
@@ -152,6 +157,25 @@ export const codeAPI = {
   getCodes: (groupCode: string) => request<Code[]>(`/codes/${groupCode}`),
 };
 
+export const memoAPI = {
+  getMemos: () => request<Memo[]>('/memos'),
+
+  createMemo: (title: string, content = '') =>
+    request<Memo>('/memos', {
+      method: 'POST',
+      body: JSON.stringify({ title, content }),
+    }),
+
+  updateMemo: (id: number, data: Partial<Pick<Memo, 'title' | 'content'>>) =>
+    request<Memo>(`/memos/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  deleteMemo: (id: number) =>
+    request<null>(`/memos/${id}`, { method: 'DELETE' }),
+};
+
 export const adminAPI = {
   getUsers: () => request<User[]>('/admin/users'),
 
@@ -203,4 +227,27 @@ export const adminAPI = {
 
   deleteCode: (id: number) =>
     request<null>(`/admin/codes/${id}`, { method: 'DELETE' }),
+
+  getPosts: (skip = 0, limit = 20, category: string | null = null, search: string | null = null) => {
+    const params = new URLSearchParams({ skip: String(skip), limit: String(limit) });
+    if (category) params.set('category', category);
+    if (search) params.set('search', search);
+    return request<Post[]>(`/admin/posts?${params}`);
+  },
+
+  countPosts: (category: string | null = null, search: string | null = null) => {
+    const params = new URLSearchParams();
+    if (category) params.set('category', category);
+    if (search) params.set('search', search);
+    return request<PostCount>(`/admin/posts/count?${params}`);
+  },
+
+  updatePost: (id: number, data: Partial<Pick<Post, 'title' | 'content' | 'category'>>) =>
+    request<Post>(`/admin/posts/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  deletePost: (id: number) =>
+    request<null>(`/admin/posts/${id}`, { method: 'DELETE' }),
 };

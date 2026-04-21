@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from database import get_db
@@ -11,6 +11,7 @@ bearer_scheme = HTTPBearer()
 
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    response: Response = None,
     db: Session = Depends(get_db),
 ):
     token = credentials.credentials
@@ -25,8 +26,20 @@ def get_current_user(
     if not session or not session.is_active or session.expires_at < datetime.now(timezone.utc):
         raise HTTPException(status_code=401, detail="세션이 만료되었거나 로그아웃된 상태입니다.")
 
-    new_expires = datetime.now(timezone.utc) + timedelta(minutes=int(os.getenv("JWT_EXPIRE_MINUTES", 60)))
-    crud.extend_session(db, session_id, new_expires)
+    expire_minutes = int(os.getenv("JWT_EXPIRE_MINUTES", 60))
+    current_exp = datetime.fromtimestamp(payload["exp"], tz=timezone.utc)
+    time_remaining = current_exp - datetime.now(timezone.utc)
+
+    if time_remaining < timedelta(minutes=expire_minutes // 2):
+        new_expires = datetime.now(timezone.utc) + timedelta(minutes=expire_minutes)
+        crud.extend_session(db, session_id, new_expires)
+        new_token = jwt.encode(
+            {"sub": str(user_id), "session_id": session_id, "exp": new_expires},
+            os.getenv("JWT_SECRET_KEY"),
+            algorithm="HS256",
+        )
+        if response is not None:
+            response.headers["X-New-Token"] = new_token
 
     user = crud.get_user(db, user_id)
     if not user or not user.is_active:

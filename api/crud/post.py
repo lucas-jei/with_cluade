@@ -70,6 +70,21 @@ def update_post(db: Session, post_id: int, user_id: int, data: PostUpdate) -> Po
     return _attach(post, db)
 
 
+def admin_update_post(db: Session, post_id: int, data: PostUpdate) -> Post | None:
+    post = db.query(Post).filter(Post.id == post_id).first()
+    if not post:
+        return None
+    if data.title is not None:
+        post.title = data.title
+    if data.content is not None:
+        post.content = data.content
+    if data.category is not None:
+        post.category = data.category
+    db.commit()
+    db.refresh(post)
+    return _attach(post, db)
+
+
 def delete_post(db: Session, post_id: int, user_id: int, is_admin: bool = False) -> bool:
     query = db.query(Post).filter(Post.id == post_id)
     if not is_admin:
